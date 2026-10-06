@@ -1,0 +1,373 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Joelbuildscommunities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: dark stage, chrome headline with Joel's cutout breaking through it, light interludes for services and contact, stacked project cards, review marquee. */
+:root{
+  --ink:#07070b; --ink2:#10101a; --ink3:#181826; --line:rgba(255,255,255,.16); --txt:#f2f3f8; --mute:#a3a6b8;
+  --paper:#e4edf0; --paper2:#d3e0e4; --pink:#0a0a12; --pmute:#4d5666; --pline:rgba(10,10,18,.18);
+  --a1:#3f6bff; --a2:#d63cff; --a3:#ff8a3d; --lime:#c8ff3d;
+  --grad:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));
+  --disp:'Archivo','Arial Black',Impact,sans-serif; --body:'Instrument Sans','Helvetica Neue',Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--txt);font:400 17px/1.55 var(--body);overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--a3);outline-offset:3px}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
+.disp{font-family:var(--disp);font-weight:900;font-stretch:112%;text-transform:uppercase;letter-spacing:-.01em;line-height:.92}
+.chrome{color:#f6f7fc}
+
+/* nav */
+nav{position:fixed;inset:0 0 auto 0;z-index:50;padding:calc(18px + env(safe-area-inset-top,0px)) clamp(16px,4vw,48px) 12px;display:flex;justify-content:space-between;align-items:center;gap:16px;font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;mix-blend-mode:normal}
+nav .logo{white-space:nowrap;font:800 15px/1 var(--disp);font-stretch:108%;letter-spacing:0;text-transform:none;text-decoration:none}
+nav .links{display:flex;gap:clamp(14px,3.6vw,52px)}
+nav a{text-decoration:none;opacity:.85;transition:opacity .2s}nav a:hover{opacity:1}
+nav.scrolled{background:rgba(7,7,11,.93);backdrop-filter:blur(14px)}
+@media(max-width:760px){nav .links a:not(.keep){display:none}nav .logo{font-size:14px}}
+
+/* hero */
+.hero{--fs:clamp(54px,11.2vw,190px);position:relative;height:calc(var(--fs)*3.9);min-height:460px;max-width:1500px;margin:0 auto;overflow:hidden}
+.hero h1{position:absolute;left:0;right:0;top:calc(var(--fs)*.5);margin:0;text-align:center;font-size:var(--fs);z-index:1;white-space:nowrap}
+
+.hero h1 .ln{display:inline-block;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 .ln+.ln{animation-delay:.18s}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.cut{position:absolute;left:50%;bottom:calc(var(--fs)*-.34);width:calc(var(--fs)*2.95);max-width:92vw;z-index:2;transform:translateX(-50%);}
+.cut img{display:block;width:100%;height:auto;animation:pop 1.1s cubic-bezier(.2,.9,.2,1) .55s both}
+@keyframes pop{from{opacity:0;transform:translateY(14%) scale(.92)}to{opacity:1;transform:none}}
+.hero .tag{position:absolute;left:clamp(16px,4vw,48px);bottom:clamp(20px,4vw,56px);z-index:3;max-width:260px;font:600 12px/1.6 var(--body);letter-spacing:.14em;text-transform:uppercase;animation:fade 1s ease 1.1s both}
+.hero .cta{position:absolute;right:clamp(16px,4vw,48px);bottom:clamp(20px,4vw,56px);z-index:3;animation:fade 1s ease 1.2s both}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 30px;border-radius:999px;border:2px solid transparent;background:linear-gradient(var(--ink),var(--ink)) padding-box,var(--grad) border-box;color:var(--txt);font:700 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.pill:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(214,60,255,.35)}
+.pill.light{background:linear-gradient(var(--paper),var(--paper)) padding-box,var(--grad) border-box;color:var(--pink)}
+.pill.small{padding:12px 20px;font-size:11px}
+@media(max-width:700px){
+  .hero{--fs:clamp(52px,20.5vw,150px);height:calc(var(--fs)*5.45 + 84px)}
+  .hero h1{top:calc(var(--fs)*.75);line-height:.98}
+  .fl{display:none!important}
+  .hero h1 .ln{display:block}
+  .hero h1 .ln+.ln{margin-left:0}
+  .cut{bottom:84px;width:calc(var(--fs)*2.6)}
+  .hero .tag{display:none}
+  .hero .cta{left:50%;right:auto;transform:translateX(-50%);animation:none;bottom:20px}
+}
+
+/* marquees */
+.mq{overflow:hidden;position:relative;padding-block:14px}
+.mq .track{display:flex;gap:clamp(28px,5vw,64px);width:max-content;animation:mq 38s linear infinite}
+.mq.rev .track{animation-direction:reverse;animation-duration:52s}
+.mq:hover .track{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.tools .track{align-items:center}
+.tools span{font:800 clamp(20px,2.6vw,30px)/1 var(--disp);font-stretch:112%;text-transform:uppercase;color:#d9dbe6;display:flex;align-items:center;gap:clamp(28px,5vw,64px);white-space:nowrap}
+.tools span:after{content:"";width:10px;height:10px;border-radius:50%;background:var(--grad)}
+.tiles .track{gap:16px}
+.tile{flex:none;width:clamp(220px,24vw,330px);aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:var(--ink3);position:relative;border:1px solid var(--line);transition:transform .4s}
+.tile:hover{transform:translateY(-8px) rotate(-1.2deg)}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile.face img{object-position:50% 20%}
+
+/* shared section pieces */
+.sec{position:relative;padding-block:clamp(72px,10vw,150px)}
+.h2{font-size:clamp(46px,10.5vw,170px);text-align:center;margin:0}
+.ghost{--rgb:242,243,248;--p:0;color:rgba(var(--rgb),var(--p));-webkit-text-stroke:2px rgba(var(--rgb),.38)}
+.paper .ghost{--rgb:10,10,18}
+.paper{background:var(--paper);color:var(--pink);border-radius:clamp(28px,5vw,64px) clamp(28px,5vw,64px) 0 0;margin-top:calc(clamp(28px,5vw,64px)*-1);z-index:2}
+.dark2{background:var(--ink);border-radius:clamp(28px,5vw,64px) clamp(28px,5vw,64px) 0 0;margin-top:calc(clamp(28px,5vw,64px)*-1);z-index:3}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+
+/* floating glossy objects */
+.fl{position:absolute;pointer-events:none;z-index:1;will-change:transform}
+.fl svg{display:block;width:100%;height:auto;animation:bob 7s ease-in-out infinite;animation-delay:var(--bd,0s);filter:drop-shadow(0 18px 24px rgba(0,0,0,.35))}
+@keyframes bob{50%{transform:translateY(-16px) rotate(6deg)}}
+
+/* about */
+.about{overflow:hidden;padding-top:clamp(70px,9vw,130px)}
+.about .h2{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.about .h2.in{opacity:1;transform:none}
+.about p.lead{position:relative;z-index:2;max-width:760px;margin:clamp(28px,4vw,56px) auto 0;text-align:center;font:600 clamp(19px,2.2vw,28px)/1.45 var(--body)}
+.about p.lead em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.facts{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:34px auto 0;max-width:820px}
+.facts span{padding:11px 20px;border:1px solid var(--line);border-radius:999px;font:600 13px/1 var(--body);letter-spacing:.06em;color:var(--mute)}
+.facts b{color:var(--txt)}
+.photos{position:relative;z-index:2;display:flex;justify-content:center;align-items:flex-end;gap:clamp(14px,3vw,36px);margin-top:clamp(46px,6vw,90px);flex-wrap:wrap}
+.photos figure{margin:0;border-radius:26px;overflow:hidden;position:relative;border:1px solid var(--line);background:var(--ink3)}
+.photos img{display:block;width:100%;height:100%;object-fit:cover}
+.photos figcaption{position:absolute;left:14px;bottom:12px;padding:7px 12px;border-radius:99px;background:rgba(7,7,11,.7);backdrop-filter:blur(8px);font:600 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase}
+.photos .p1{width:min(300px,42vw);aspect-ratio:3/4;transform:rotate(-3deg)}
+.photos .p2{width:min(480px,88vw);aspect-ratio:16/9;transform:rotate(2deg)}
+
+/* services */
+.svc-list{margin-top:clamp(40px,6vw,90px)}
+.svc{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(16px,4vw,64px);padding-block:clamp(26px,3.4vw,46px);position:relative;align-items:start}
+.svc:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--pline);transform:scaleX(0);transform-origin:left;transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.svc.in:before{transform:none}
+.svc h3{margin:0;font-size:clamp(30px,4vw,58px);min-width:0;transition:transform .4s}
+.svc:hover h3{transform:translateX(10px)}
+.svc p{margin:0 0 16px;font-size:clamp(16px,1.5vw,19px);color:var(--pmute);max-width:560px}
+.svc .tg{display:flex;flex-wrap:wrap;gap:8px}
+.svc .tg i{font-style:normal;padding:7px 14px;border-radius:99px;background:rgba(10,10,18,.07);font:600 12px/1 var(--body);letter-spacing:.06em}
+@media(max-width:760px){.svc{grid-template-columns:1fr}.svc h3{font-size:clamp(30px,10.5vw,58px)}}
+
+/* projects */
+.projects{padding-bottom:clamp(60px,8vw,120px)}
+.stack{margin-top:clamp(40px,6vw,80px);padding-bottom:6vh}
+.card{position:sticky;top:calc(84px + var(--k)*14px);margin-bottom:clamp(36px,6vh,70px);background:var(--ink2);border:1px solid var(--line);border-radius:clamp(22px,3vw,40px);padding:clamp(18px,2.4vw,34px);transform-origin:50% 0;will-change:transform}
+.card header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:clamp(14px,2vw,26px)}
+.card .ix{font:900 clamp(30px,4vw,56px)/1 var(--disp);font-stretch:115%;color:var(--mute);margin-right:16px}
+.card h3{margin:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;font:800 clamp(20px,2.6vw,36px)/1.05 var(--disp);font-stretch:108%;text-transform:uppercase}
+.card h3 small{font:600 12px/1 var(--body);letter-spacing:.16em;color:var(--mute)}
+.card .body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(14px,2vw,26px)}
+.shot{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/9;border:0;padding:0;background:#000;cursor:pointer;display:block;width:100%}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s}
+.shot:hover img{transform:scale(1.05)}
+.shot .play{position:absolute;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:rgba(7,7,11,.62);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.4);display:grid;place-items:center;transition:transform .3s}
+.shot:hover .play{transform:scale(1.15)}
+.shot .play:after{content:"";margin-left:4px;border-left:15px solid #fff;border-block:9px solid transparent}
+.info{display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-width:0}
+.info p{margin:0;font-size:clamp(15px,1.4vw,18px);color:#d4d6e2}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.nums div{background:var(--ink3);border-radius:16px;padding:14px 16px}
+.nums b{display:block;font:900 clamp(26px,3vw,42px)/1 var(--disp);font-stretch:112%;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nums span{display:block;margin-top:6px;font:600 12px/1.25 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+@media(max-width:820px){.card .body{grid-template-columns:1fr}.card{position:relative;top:auto}}
+.note{font-size:13px;color:var(--mute);text-align:center;margin-top:10px}
+
+/* clients */
+.clients{overflow:hidden;padding-bottom:clamp(60px,8vw,110px)}
+.clients .mq{margin-top:clamp(40px,6vw,80px)}
+.clients .track{gap:18px;animation-duration:70s}
+.rev-card{flex:none;width:clamp(290px,30vw,420px);border:1px solid var(--line);border-radius:26px;padding:24px;background:var(--ink2);display:flex;flex-direction:column;gap:16px;white-space:normal}
+.rev-card .st{color:#ffc24a;letter-spacing:3px;font-size:15px}
+.rev-card blockquote{margin:0;font-size:15.5px;line-height:1.55;color:#e4e6f0}
+.rev-card .who{display:flex;align-items:center;gap:12px;margin-top:auto}
+.rev-card .av{width:42px;height:42px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font:900 14px/1 var(--disp);color:#fff;flex:none}
+.rev-card b{display:block;font-size:14px}
+.rev-card span{display:block;font-size:12px;color:var(--mute)}
+
+/* contact */
+.contact{overflow:hidden}
+.contact .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);margin-top:clamp(40px,6vw,80px);position:relative;z-index:2}
+.mail{display:block;font:800 clamp(17px,2.35vw,30px)/1.15 var(--disp);font-stretch:108%;overflow-wrap:anywhere;text-decoration:none;margin:0 0 6px}
+.mail:hover{text-decoration:underline}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 18px}
+.copy{border:1px solid var(--pline);background:transparent;color:var(--pink);border-radius:99px;padding:8px 14px;font:700 11px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.copy:hover{background:var(--pink);color:var(--paper)}
+.soc{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.soc a{padding:13px 22px;border-radius:99px;background:var(--pink);color:var(--paper);font:700 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:transform .25s,background .25s}
+.soc a:hover{transform:translateY(-3px);background:linear-gradient(90deg,#3f6bff,#d63cff)}
+form{display:grid;gap:14px}
+form label{font:700 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--pmute)}
+form input,form textarea{width:100%;margin-top:8px;padding:14px 0;border:0;border-bottom:1.5px solid var(--pline);background:transparent;color:var(--pink);font:500 18px/1.4 var(--body);border-radius:0}
+form input:focus,form textarea:focus{outline:none;border-color:var(--a2)}
+form textarea{min-height:110px;resize:vertical}
+.msg{font-size:14px;color:var(--pmute);min-height:20px}
+
+/* footer */
+footer{background:var(--ink);padding-block:clamp(50px,7vw,100px) 28px;position:relative;z-index:4;border-radius:clamp(28px,5vw,64px) clamp(28px,5vw,64px) 0 0;margin-top:calc(clamp(28px,5vw,64px)*-1)}
+.cols{display:flex;justify-content:flex-end;gap:clamp(30px,8vw,120px);flex-wrap:wrap;font-size:14px}
+.cols h4{margin:0 0 12px;font:700 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.cols a,.cols p{display:block;margin:0 0 8px;text-decoration:none;color:var(--txt)}
+.cols a:hover{text-decoration:underline}
+.big{display:grid;gap:clamp(6px,1.2vw,16px);margin-top:clamp(34px,5vw,70px);user-select:none}
+.big div{display:flex;justify-content:flex-start;gap:.02em;font:900 clamp(34px,9.2vw,160px)/.86 var(--disp);font-stretch:112%;text-transform:uppercase}
+.big span{display:block;transition:transform .35s cubic-bezier(.3,1.6,.4,1)}
+.big span:hover{transform:translateY(-4%) rotate(-4deg)}
+.copy-r{margin-top:30px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mute)}
+
+
+/* custom cursor (fine pointers only) */
+.cur{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;opacity:0;transition:opacity .25s}
+.cur-on .cur{opacity:1}
+.cur.dot{width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;mix-blend-mode:difference}
+.cur.ring{width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:1.5px solid #fff;mix-blend-mode:difference;display:grid;place-items:center;transition:width .3s cubic-bezier(.2,.8,.2,1),height .3s cubic-bezier(.2,.8,.2,1),margin .3s cubic-bezier(.2,.8,.2,1),background .3s,opacity .25s}
+.cur.ring.link{width:72px;height:72px;margin:-36px 0 0 -36px;background:#fff}
+.cur.ring.down{width:32px;height:32px;margin:-16px 0 0 -16px}
+.cur-lab{position:fixed;left:0;top:0;z-index:10000;pointer-events:none;width:72px;height:72px;margin:-36px 0 0 -36px;display:grid;place-items:center;font:800 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:#07070b;opacity:0;transition:opacity .2s}
+.cur-lab.show{opacity:1}
+@media (hover:hover) and (pointer:fine){.cur-on,.cur-on *{cursor:none!important}}
+@media (hover:none),(pointer:coarse){.cur,.cur-lab{display:none}}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:clamp(12px,3vw,40px);background:rgba(4,4,8,.86);backdrop-filter:blur(10px)}
+.modal.open{display:grid}
+.modal .box{width:min(1100px,100%);background:var(--ink2);border:1px solid var(--line);border-radius:26px;padding:clamp(14px,2vw,24px);animation:pop .4s ease both}
+.modal video{width:100%;aspect-ratio:16/9;border-radius:16px;background:#000;display:block}
+.modal .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.modal .top b{font:800 clamp(16px,2vw,24px)/1.1 var(--disp);font-stretch:108%;text-transform:uppercase}
+.modal button{border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:99px;padding:10px 18px;font:700 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+
+@media(max-width:820px){.contact .grid{grid-template-columns:1fr}.cols{justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .rv,.about .h2{opacity:1!important;transform:none!important}.svc:before{transform:none!important}
+}
+</style></head><body>
+
+<nav id="nav">
+  <a class="logo" href="#top">joelbuildscommunities</a>
+  <div class="links"><a href="#about">About</a><a href="#services" class="opt">Services</a><a href="#projects">Projects</a><a href="#clients">Clients</a><a href="#contact" class="keep">Contact</a></div>
+</nav>
+
+<header id="top">
+  <div class="hero" id="hero">
+    <h1 class="disp chrome" id="heroTitle" aria-label="Hi, I'm Joel"><span class="ln">HI, I'M</span> <span class="ln">JOEL</span></h1>
+    <div class="cut" id="cut"><img src="img-joel-cut.webp" alt="Joel, community builder" width="804" height="787"></div>
+    <p class="tag">Community architect building Circle, Skool and Discord communities people actually use</p>
+    <div class="cta"><a class="pill" href="#contact">Contact me</a></div>
+  </div>
+</header>
+
+<div class="mq tools" aria-label="Platforms and tools I work with"><div class="track"><span>Circle.so</span><span>Skool</span><span>Discord</span><span>GoHighLevel</span><span>Stripe paywalls</span><span>Zapier</span><span>Make</span><span>Notion</span><span>Google Sheets</span><span>Automation</span><span>Circle.so</span><span>Skool</span><span>Discord</span><span>GoHighLevel</span><span>Stripe paywalls</span><span>Zapier</span><span>Make</span><span>Notion</span><span>Google Sheets</span><span>Automation</span></div></div>
+<div class="mq tiles rev" aria-hidden="true"><div class="track"><div class="tile "><img src="img-curate-poster.jpg" alt="" loading="lazy"></div><div class="tile face"><img src="img-joel-standing.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-aurelia-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-ssg-poster.jpg" alt="" loading="lazy"></div><div class="tile face"><img src="img-joel-stage.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-luminara-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-psc-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-veridian-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-cfl-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-curate-poster.jpg" alt="" loading="lazy"></div><div class="tile face"><img src="img-joel-standing.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-aurelia-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-ssg-poster.jpg" alt="" loading="lazy"></div><div class="tile face"><img src="img-joel-stage.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-luminara-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-psc-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-veridian-poster.jpg" alt="" loading="lazy"></div><div class="tile "><img src="img-cfl-poster.jpg" alt="" loading="lazy"></div></div></div>
+
+<section class="sec about" id="about">
+  <div class="fl" style="left:4%;top:12%;width:clamp(70px,11vw,170px)" data-speed="-.12"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a7bff"/><stop offset="1" stop-color="#3f6bff"/></linearGradient></defs><path d="M22 14h76a14 14 0 0 1 14 14v46a14 14 0 0 1-14 14H64L38 110V88H22A14 14 0 0 1 8 74V28A14 14 0 0 1 22 14z" fill="url(#b1)"/><ellipse cx="40" cy="30" rx="26" ry="9" fill="#fff" opacity=".35" transform="rotate(-8 40 30)"/><circle cx="40" cy="52" r="6" fill="#fff" opacity=".9"/><circle cx="60" cy="52" r="6" fill="#fff" opacity=".9"/><circle cx="80" cy="52" r="6" fill="#fff" opacity=".9"/></svg></div>
+  <div class="fl" style="right:5%;top:8%;width:clamp(60px,9vw,140px)" data-speed=".1"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="h3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7ab8"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><g fill="url(#h3)"><rect x="34" y="6" width="16" height="108" rx="8" transform="rotate(8 42 60)"/><rect x="72" y="6" width="16" height="108" rx="8" transform="rotate(8 80 60)"/><rect x="8" y="34" width="104" height="16" rx="8" transform="rotate(8 60 42)"/><rect x="8" y="70" width="104" height="16" rx="8" transform="rotate(8 60 78)"/></g></svg></div>
+  <div class="fl" style="left:8%;bottom:30%;width:clamp(50px,7vw,110px)" data-speed=".14"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><radialGradient id="s5" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#9bb2ff"/><stop offset="1" stop-color="#4d5cff"/></radialGradient></defs><path d="M60 4C64 40 80 56 116 60 80 64 64 80 60 116 56 80 40 64 4 60 40 56 56 40 60 4z" fill="url(#s5)"/></svg></div>
+  <div class="fl" style="right:7%;bottom:26%;width:clamp(70px,10vw,150px)" data-speed="-.1"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><radialGradient id="p6" cx=".32" cy=".28" r=".85"><stop offset="0" stop-color="#fff2c9"/><stop offset=".35" stop-color="#ffb347"/><stop offset="1" stop-color="#e2461d"/></radialGradient></defs><circle cx="60" cy="60" r="52" fill="url(#p6)"/><ellipse cx="42" cy="34" rx="20" ry="11" fill="#fff" opacity=".5" transform="rotate(-30 42 34)"/></svg></div>
+  <div class="wrap">
+    <h2 class="h2 disp chrome" id="aboutH" aria-label="About me">ABOUT ME</h2>
+    <p class="lead rv">I build communities that members actually use. <em>Circle.so, Skool and Discord</em>, set up so people know where to start, what to do next and why to come back. I work with coaches, creators and brands, from audit to launch to the automations that run behind the scenes.</p>
+    <div class="facts rv" style="--d:.1s"><span><b>7</b> case studies</span><span><b>3</b> platforms</span><span><b>Circle Academy</b> certified</span><span>Based in <b>Lagos</b>, working worldwide</span></div>
+    <div class="photos">
+      <figure class="p1 rv"><img src="img-joel-standing.jpg" alt="Joel standing outdoors in a grey jacket" loading="lazy"><figcaption>Joel</figcaption></figure>
+      <figure class="p2 rv" style="--d:.15s"><img src="img-joel-stage.jpg" alt="Joel speaking on stage with a microphone" loading="lazy"><figcaption>Speaker and host</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec paper" id="services">
+  <div class="fl" style="right:1%;top:3%;width:clamp(44px,6vw,90px)" data-speed=".12"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="r7" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0a8ff"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#3b2bb8"/></linearGradient></defs><circle cx="60" cy="60" r="42" fill="none" stroke="url(#r7)" stroke-width="26"/><path d="M26 46A38 38 0 0 1 62 22" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55"/></svg></div>
+  <div class="wrap">
+    <h2 class="h2 disp ghost" data-scrub>Services</h2>
+    <div class="svc-list"><div class="svc"><h3 class="disp">Circle.so</h3><div><p>Spaces, access groups, paywalls, migrations and the automations that welcome members. Built so you can run it without me.</p><div class="tg"><i>Community builds</i><i>Migrations</i><i>Stripe paywalls</i><i>Automations</i></div></div></div><div class="svc"><h3 class="disp">Skool</h3><div><p>Classroom structure, onboarding, audits before you spend on ads, and daily community management that keeps members talking.</p><div class="tg"><i>Audits</i><i>Onboarding</i><i>Classrooms</i><i>Daily management</i></div></div></div><div class="svc"><h3 class="disp">Discord</h3><div><p>Server architecture, roles and permissions, onboarding, moderation, ambassador programs and premium tiers for creator, Web3 and sports communities.</p><div class="tg"><i>Server architecture</i><i>Roles</i><i>Moderation</i><i>Premium tiers</i></div></div></div><div class="svc"><h3 class="disp">CRM and automation</h3><div><p>GoHighLevel pipelines, workflows, calendars and lead capture, with Zapier and Make connecting the rest. Tested end to end before handover.</p><div class="tg"><i>GoHighLevel</i><i>Workflows</i><i>Zapier and Make</i><i>Lead follow up</i></div></div></div></div>
+  </div>
+</section>
+
+<section class="sec dark2 projects" id="projects">
+  <div class="wrap">
+    <h2 class="h2 disp ghost" data-scrub>Projects</h2>
+    <div class="stack" id="stack"><article class="card" style="--k:0"><header><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="ix">01</span><h3>Curate Catholic <small>Circle.so / Build</small></h3></div><button class="pill small" type="button" data-vid="curate">Watch case study</button></header><div class="body"><button class="shot" type="button" data-vid="curate" aria-label="Play Curate Catholic case study"><img src="img-curate-poster.jpg" alt="" loading="lazy"><span class="play"></span></button><div class="info"><p>A paid, verified network for Catholic real estate agents that takes payments and welcomes members on its own.</p><div class="nums"><div><b>17</b><span>spaces</span></div><div><b>14</b><span>live automations</span></div><div><b>11</b><span>directory filters</span></div><div><b>2</b><span>paid tiers</span></div></div></div></div></article><article class="card" style="--k:1"><header><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="ix">02</span><h3>Senior Style Guide <small>Circle.so / Migration and build</small></h3></div><button class="pill small" type="button" data-vid="ssg">Watch case study</button></header><div class="body"><button class="shot" type="button" data-vid="ssg" aria-label="Play Senior Style Guide case study"><img src="img-ssg-poster.jpg" alt="" loading="lazy"><span class="play"></span></button><div class="info"><p>Three brands moved from Facebook, Squarespace and Discord into one community with one login.</p><div class="nums"><div><b>20</b><span>spaces</span></div><div><b>5</b><span>Stripe paywalls</span></div><div><b>208</b><span>posts moved</span></div><div><b>59</b><span>lessons built</span></div></div></div></div></article><article class="card" style="--k:2"><header><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="ix">03</span><h3>Portfolio Safety Challenge <small>Circle.so / Cohort build</small></h3></div><button class="pill small" type="button" data-vid="psc">Watch case study</button></header><div class="body"><button class="shot" type="button" data-vid="psc" aria-label="Play Portfolio Safety Challenge case study"><img src="img-psc-poster.jpg" alt="" loading="lazy"><span class="play"></span></button><div class="info"><p>A monthly cohort program in three tiers, built so each new month is a copy, not a rebuild.</p><div class="nums"><div><b>14</b><span>spaces</span></div><div><b>6</b><span>Stripe paywalls</span></div><div><b>8</b><span>access groups</span></div><div><b>3</b><span>live automations</span></div></div></div></div></article><article class="card" style="--k:3"><header><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="ix">04</span><h3>Coffee Fitness Life <small>Skool / Audit</small></h3></div><button class="pill small" type="button" data-vid="cfl">Watch case study</button></header><div class="body"><button class="shot" type="button" data-vid="cfl" aria-label="Play Coffee Fitness Life case study"><img src="img-cfl-poster.jpg" alt="" loading="lazy"><span class="play"></span></button><div class="info"><p>An audit of a Skool community before paid ads, with a written plan in fix order. Recommendations only.</p><div class="nums"><div><b>5</b><span>areas audited</span></div><div><b>15</b><span>courses reviewed</span></div><div><b>3</b><span>priority gaps</span></div><div><b>2</b><span>days to deliver</span></div></div></div></div></article><article class="card" style="--k:4"><header><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="ix">05</span><h3>Aurelia Mercatoria <small>Discord / Community build</small></h3></div><button class="pill small" type="button" data-vid="aurelia">Watch case study</button></header><div class="body"><button class="shot" type="button" data-vid="aurelia" aria-label="Play Aurelia Mercatoria case study"><img src="img-aurelia-poster.jpg" alt="" loading="lazy"><span class="play"></span></button><div class="info"><p>A Discord that turns a growing crowd of creators into an active affiliate network.</p><div class="nums"><div><b>1,840</b><span>members joined</span></div><div><b>1,296</b><span>completed onboarding</span></div><div><b>58%</b><span>weekly active</span></div><div><b>67%</b><span>fewer repeat questions</span></div></div></div></div></article><article class="card" style="--k:5"><header><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="ix">06</span><h3>Luminara Protocol <small>Discord / Web3 operations</small></h3></div><button class="pill small" type="button" data-vid="luminara">Watch case study</button></header><div class="body"><button class="shot" type="button" data-vid="luminara" aria-label="Play Luminara Protocol case study"><img src="img-luminara-poster.jpg" alt="" loading="lazy"><span class="play"></span></button><div class="info"><p>A Web3 server built around progression: verify, learn, contribute, then become an ambassador.</p><div class="nums"><div><b>2,740</b><span>members joined</span></div><div><b>1,984</b><span>verified</span></div><div><b>61%</b><span>weekly active</span></div><div><b>68%</b><span>fewer where do I start questions</span></div></div></div></div></article><article class="card" style="--k:6"><header><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="ix">07</span><h3>Veridian Athletics <small>Discord / Rebrand and premium</small></h3></div><button class="pill small" type="button" data-vid="veridian">Watch case study</button></header><div class="body"><button class="shot" type="button" data-vid="veridian" aria-label="Play Veridian Athletics case study"><img src="img-veridian-poster.jpg" alt="" loading="lazy"><span class="play"></span></button><div class="info"><p>A sports Discord rebrand with an analyst hub, free and premium tiers and game day activation.</p><div class="nums"><div><b>3,240</b><span>members retained</span></div><div><b>74%</b><span>more game day engagement</span></div><div><b>286</b><span>active premium members</span></div><div><b>39%</b><span>more analyst engagement</span></div></div></div></div></article></div>
+    <p class="note">Press play on any card to watch the narrated walkthrough. Coffee Fitness Life was an audit with recommendations only.</p>
+  </div>
+</section>
+
+<section class="sec dark2 clients" id="clients">
+  <div class="fl" style="left:1%;top:3%;width:clamp(44px,6vw,90px)" data-speed="-.1"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="k8" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2ff9a"/><stop offset="1" stop-color="#7ddc1f"/></linearGradient></defs><path d="M60 4 72 44 112 36 82 64 112 92 72 78 60 116 48 78 8 92 38 64 8 36 48 44z" fill="url(#k8)"/></svg></div>
+  <div class="fl" style="right:1%;top:4%;width:clamp(44px,6vw,90px)" data-speed=".12"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a7bff"/><stop offset="1" stop-color="#3f6bff"/></linearGradient></defs><path d="M22 14h76a14 14 0 0 1 14 14v46a14 14 0 0 1-14 14H64L38 110V88H22A14 14 0 0 1 8 74V28A14 14 0 0 1 22 14z" fill="url(#b2)"/><ellipse cx="40" cy="30" rx="26" ry="9" fill="#fff" opacity=".35" transform="rotate(-8 40 30)"/><circle cx="40" cy="52" r="6" fill="#fff" opacity=".9"/><circle cx="60" cy="52" r="6" fill="#fff" opacity=".9"/><circle cx="80" cy="52" r="6" fill="#fff" opacity=".9"/></svg></div>
+  <div class="wrap"><h2 class="h2 disp ghost" data-scrub style="font-size:clamp(40px,8.4vw,138px)">What clients are saying</h2></div>
+  <div class="mq"><div class="track"><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel did a great job setting up our CRM, pipeline, lead capture, and automated follow-up workflows. He also tested the triggers and lead journey thoroughly.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>CRM and lead automation setup</b><span>Verified Upwork client, Sep 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel is highly skilled. He took our existing processes and turned them into a well-structured, working system with the CRM, workflows, automation, calendars, and integrations properly connected. He understood the project quickly, worked independently, and delivered exactly what we needed. He is indeed an excellent specialist and I highly recommend him.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>CRM, workflows and calendars</b><span>Verified Upwork client, Aug 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;10/10 would recommend Joel, super easy to work with and incredibly patient. I will 100% be using him again to streamline our business. Work with Joel, you won&#x27;t be disappointed.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Spreadsheet integration</b><span>Verified Upwork client, May 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel was fantastic to work with. He delivered exactly what was promised, kept me updated throughout the project, and built a clean, reliable system that works perfectly. He&#x27;s knowledgeable, professional, and pays great attention to detail. I highly recommend him and would happily work with him again.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Pipeline and workflow automation</b><span>Verified Upwork client, Jul 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Working with Joel was a great experience. He was responsive, easy to communicate with, and clearly knows his stuff inside and out. Everything was well organized, thoroughly tested, and delivered exactly as discussed. I appreciated his professionalism and willingness to make sure every detail was right. I&#x27;d definitely hire him again for future automation projects.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Booking funnel and automation</b><span>Verified Upwork client, Jul 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel was professional, responsive, detail-oriented, and easy to work with. He understood the goal of keeping the CRM simple, efficient, and easy for our team to manage. I would highly recommend him for CRM setup, pipeline optimization, and automation projects.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Pipeline optimization</b><span>Verified Upwork client, Jun 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel is very helpful, kind, and patient. He assisted me very well with setting up my CRM; the foundation has now been well established by him. I will definitely work with Joel more often.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>CRM setup</b><span>Verified Upwork client, Jul 2024</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel did an exceptional job guiding me through the setup. He was able to help me analyze my options and make the best decision for my team based on our particular use case. I will be hiring him again.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Setup consultation</b><span>Verified Upwork client, Jul 2024</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel did a great job setting up our CRM, pipeline, lead capture, and automated follow-up workflows. He also tested the triggers and lead journey thoroughly.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>CRM and lead automation setup</b><span>Verified Upwork client, Sep 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel is highly skilled. He took our existing processes and turned them into a well-structured, working system with the CRM, workflows, automation, calendars, and integrations properly connected. He understood the project quickly, worked independently, and delivered exactly what we needed. He is indeed an excellent specialist and I highly recommend him.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>CRM, workflows and calendars</b><span>Verified Upwork client, Aug 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;10/10 would recommend Joel, super easy to work with and incredibly patient. I will 100% be using him again to streamline our business. Work with Joel, you won&#x27;t be disappointed.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Spreadsheet integration</b><span>Verified Upwork client, May 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel was fantastic to work with. He delivered exactly what was promised, kept me updated throughout the project, and built a clean, reliable system that works perfectly. He&#x27;s knowledgeable, professional, and pays great attention to detail. I highly recommend him and would happily work with him again.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Pipeline and workflow automation</b><span>Verified Upwork client, Jul 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Working with Joel was a great experience. He was responsive, easy to communicate with, and clearly knows his stuff inside and out. Everything was well organized, thoroughly tested, and delivered exactly as discussed. I appreciated his professionalism and willingness to make sure every detail was right. I&#x27;d definitely hire him again for future automation projects.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Booking funnel and automation</b><span>Verified Upwork client, Jul 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel was professional, responsive, detail-oriented, and easy to work with. He understood the goal of keeping the CRM simple, efficient, and easy for our team to manage. I would highly recommend him for CRM setup, pipeline optimization, and automation projects.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Pipeline optimization</b><span>Verified Upwork client, Jun 2026</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel is very helpful, kind, and patient. He assisted me very well with setting up my CRM; the foundation has now been well established by him. I will definitely work with Joel more often.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>CRM setup</b><span>Verified Upwork client, Jul 2024</span></div></figcaption></figure><figure class="rev-card" style="margin:0"><div class="st" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;Joel did an exceptional job guiding me through the setup. He was able to help me analyze my options and make the best decision for my team based on our particular use case. I will be hiring him again.&rdquo;</blockquote><figcaption class="who"><span class="av">&#9733;</span><div><b>Setup consultation</b><span>Verified Upwork client, Jul 2024</span></div></figcaption></figure></div></div>
+  <div class="wrap"><p class="note">Verified Upwork client reviews from my CRM and automation contracts. They are not reviews of the projects above.</p></div>
+</section>
+
+<section class="sec paper contact" id="contact">
+  <div class="fl" style="right:1%;top:2%;width:clamp(44px,6vw,90px)" data-speed="-.14"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="k9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2ff9a"/><stop offset="1" stop-color="#7ddc1f"/></linearGradient></defs><path d="M60 4 72 44 112 36 82 64 112 92 72 78 60 116 48 78 8 92 38 64 8 36 48 44z" fill="url(#k9)"/></svg></div>
+  <div class="fl" style="left:2%;bottom:6%;width:clamp(60px,8vw,120px)" data-speed=".12"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="h4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7ab8"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><g fill="url(#h4)"><rect x="34" y="6" width="16" height="108" rx="8" transform="rotate(8 42 60)"/><rect x="72" y="6" width="16" height="108" rx="8" transform="rotate(8 80 60)"/><rect x="8" y="34" width="104" height="16" rx="8" transform="rotate(8 60 42)"/><rect x="8" y="70" width="104" height="16" rx="8" transform="rotate(8 60 78)"/></g></svg></div>
+  <div class="wrap">
+    <h2 class="h2 disp ghost" data-scrub style="font-size:clamp(40px,8.4vw,138px)">Let's get in touch</h2>
+    <div class="grid">
+      <div class="rv">
+        <p class="mail" id="mailTxt">joelifeanyichukwu6@gmail.com</p>
+        <div class="row"><a class="pill small light" href="mailto:joelifeanyichukwu6@gmail.com">Email me</a><button class="copy" type="button" data-copy="joelifeanyichukwu6@gmail.com">Copy email</button></div>
+        <p class="mail" style="font-size:clamp(18px,2.6vw,32px)">+234 706 505 9682</p>
+        <div class="row"><a class="pill small light" href="https://wa.me/2347065059682" target="_blank" rel="noopener">WhatsApp</a><button class="copy" type="button" data-copy="+2347065059682">Copy number</button></div>
+        <div class="soc">
+          <a href="https://www.linkedin.com/in/joel-nnamani/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.instagram.com/joelbrands_/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.facebook.com/profile.php?id=61559182686227" target="_blank" rel="noopener">Facebook</a>
+        </div>
+      </div>
+      <form id="cf" class="rv" style="--d:.12s" novalidate>
+        <label for="fn">Your name<input id="fn" name="n" autocomplete="name" placeholder="Jane Doe"></label>
+        <label for="fe">Your email<input id="fe" name="e" type="email" autocomplete="email" placeholder="jane@company.com"></label>
+        <label for="fm">What are you building?<textarea id="fm" name="m" placeholder="A Circle community for my coaching program..."></textarea></label>
+        <div><button class="pill light" type="submit">Send</button></div>
+        <p class="msg" id="fmsg" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><h4>Social</h4><a href="https://www.linkedin.com/in/joel-nnamani/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.instagram.com/joelbrands_/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/profile.php?id=61559182686227" target="_blank" rel="noopener">Facebook</a></div>
+      <div><h4>Contact</h4><p>joelifeanyichukwu6@gmail.com</p><p>+234 706 505 9682</p><a href="https://wa.me/2347065059682" target="_blank" rel="noopener">WhatsApp</a></div>
+    </div>
+    <div class="big" aria-label="Joelbuildscommunities"><div><span style="color:#c8ff3d">J</span><span style="color:#a66bff">O</span><span style="color:#f2f3f8">E</span><span style="color:#ff7ab8">L</span></div><div><span style="color:#a66bff">B</span><span style="color:#f2f3f8">U</span><span style="color:#ff7ab8">I</span><span style="color:#4d78ff">L</span><span style="color:#ffb347">D</span><span style="color:#c8ff3d">S</span></div><div><span style="color:#f2f3f8">C</span><span style="color:#ff7ab8">O</span><span style="color:#4d78ff">M</span><span style="color:#ffb347">M</span><span style="color:#c8ff3d">U</span><span style="color:#a66bff">N</span><span style="color:#f2f3f8">I</span><span style="color:#ff7ab8">T</span><span style="color:#4d78ff">I</span><span style="color:#ffb347">E</span><span style="color:#c8ff3d">S</span></div></div>
+    <div class="copy-r"><span>joelbuildscommunities.space</span><span>Circle.so, Skool and Discord</span></div>
+  </div>
+</footer>
+
+<div class="cur ring" id="cRing" aria-hidden="true"></div><div class="cur dot" id="cDot" aria-hidden="true"></div><div class="cur-lab" id="cLab" aria-hidden="true"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Case study video">
+  <div class="box"><div class="top"><b id="mTitle"></b><button type="button" id="mClose">Close</button></div><video id="mVid" controls playsinline preload="none"></video></div>
+</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+/* reveals */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+$$('.rv,.svc,#aboutH').forEach(e=>io.observe(e));
+/* data */
+const PROJ={"curate": {"name": "Curate Catholic"}, "ssg": {"name": "Senior Style Guide"}, "psc": {"name": "Portfolio Safety Challenge"}, "cfl": {"name": "Coffee Fitness Life"}, "aurelia": {"name": "Aurelia Mercatoria"}, "luminara": {"name": "Luminara Protocol"}, "veridian": {"name": "Veridian Athletics"}};
+/* modal */
+const modal=$('#modal'),vid=$('#mVid');
+function openVid(id){const p=PROJ[id];$('#mTitle').textContent=p.name;vid.poster='img-'+id+'-poster.jpg';vid.src='v-'+id+'.mp4';modal.classList.add('open');vid.play().catch(()=>{})}
+function closeVid(){modal.classList.remove('open');vid.pause();vid.removeAttribute('src');vid.load()}
+$$('[data-vid]').forEach(b=>b.addEventListener('click',()=>openVid(b.dataset.vid)));
+$('#mClose').onclick=closeVid;modal.addEventListener('click',e=>{if(e.target===modal)closeVid()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeVid()});
+/* copy */
+$$('.copy').forEach(b=>b.addEventListener('click',async()=>{const t=b.dataset.copy,o=b.textContent;try{await navigator.clipboard.writeText(t);b.textContent='Copied'}catch(_){const r=document.createRange();r.selectNodeContents(b.closest('.rv').querySelector('.mail'));getSelection().removeAllRanges();getSelection().addRange(r);b.textContent='Select and copy'}setTimeout(()=>b.textContent=o,1600)}));
+/* form: opens the visitor's email app with the message filled in */
+$('#cf').addEventListener('submit',e=>{e.preventDefault();const n=$('#fn').value.trim(),m=$('#fm').value.trim(),em=$('#fe').value.trim(),msg=$('#fmsg');
+  if(!n||!m){msg.textContent='Add your name and a short message first.';return}
+  const body=encodeURIComponent(m+'\n\nFrom: '+n+(em?' ('+em+')':''));
+  msg.textContent='Opening your email app. If nothing opens, copy my email address above and paste your message there.';
+  location.href='mailto:joelifeanyichukwu6@gmail.com?subject='+encodeURIComponent('Portfolio enquiry from '+n)+'&body='+body});
+/* scroll + pointer motion */
+const nav=$('#nav'),heroT=$('#heroTitle'),cut=$('#cut'),fls=$$('.fl'),scr=$$('[data-scrub]'),cards=$$('.card');
+let mx=0,my=0,tx=0,ty=0;
+addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2},{passive:true});
+function frame(){
+  const y=scrollY,vh=innerHeight;
+  nav.classList.toggle('scrolled',y>40);
+  if(!reduce){
+    tx+=(mx-tx)*.07;ty+=(my-ty)*.07;
+    if(y<vh*1.4){heroT.style.transform='translateY('+Math.round(y*.16)+'px)';cut.style.transform='translateX(calc(-50% + '+Math.round(tx*-14)+'px)) translateY('+Math.round(y*.05+ty*-6)+'px)'}
+    fls.forEach(f=>{const r=f.parentElement.getBoundingClientRect();if(r.bottom<-200||r.top>vh+200)return;const s=+f.dataset.speed||0;f.style.transform='translate3d('+(tx*18*s*8)+'px,'+((r.top+r.height/2-vh/2)*s)+'px,0)'});
+    cards.forEach((c,i)=>{const nx=cards[i+1];if(!nx||getComputedStyle(c).position!=='sticky'){c.style.transform='';c.style.filter='';return}const top=nx.getBoundingClientRect().top,stick=parseFloat(getComputedStyle(c).top);const p=clamp((vh-top)/(vh-stick),0,1);c.style.transform='scale('+(1-.05*p)+')';c.style.filter='brightness('+(1-.35*p)+')'});
+  }
+  scr.forEach(h=>{const r=h.getBoundingClientRect();const p=clamp((vh*.92-r.top)/(vh*.5),0,1);h.style.setProperty('--p',reduce?1:p.toFixed(3))});
+  requestAnimationFrame(frame)}
+frame();
+/* custom cursor */
+(function(){
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  const root=document.documentElement,ring=$('#cRing'),dot=$('#cDot'),lab=$('#cLab');
+  let x=innerWidth/2,y=innerHeight/2,rx=x,ry=y,active=false;
+  addEventListener('pointermove',e=>{x=e.clientX;y=e.clientY;if(!active){active=true;rx=x;ry=y;root.classList.add('cur-on')}
+    dot.style.transform='translate('+x+'px,'+y+'px)';
+    const t=e.target.closest&&e.target.closest('a,button,.shot,.tile,input,textarea,.copy');
+    const play=e.target.closest&&e.target.closest('.shot');
+    ring.classList.toggle('link',!!t);
+    lab.textContent=play?'Play':'';lab.classList.toggle('show',!!play);
+  },{passive:true});
+  addEventListener('pointerdown',()=>ring.classList.add('down'));
+  addEventListener('pointerup',()=>ring.classList.remove('down'));
+  document.addEventListener('mouseleave',()=>root.classList.remove('cur-on'));
+  document.addEventListener('mouseenter',()=>{if(active)root.classList.add('cur-on')});
+  (function loop(){rx+=(x-rx)*.18;ry+=(y-ry)*.18;ring.style.transform='translate('+rx.toFixed(1)+'px,'+ry.toFixed(1)+'px)';lab.style.transform='translate('+rx.toFixed(1)+'px,'+ry.toFixed(1)+'px)';requestAnimationFrame(loop)})();
+})();
+</script>
+</body></html>
