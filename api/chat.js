@@ -1,8 +1,8 @@
 // Vercel serverless function: website chatbot for joelbuildscommunities.space
-// Needs env vars: ANTHROPIC_API_KEY (required), WEB3FORMS_KEY (for lead emails).
+// Uses Google Gemini (free tier). Needs env vars: GEMINI_API_KEY (required), WEB3FORMS_KEY (for lead emails).
 const KB = require('./knowledge.js');
 
-const MODEL = process.env.CHAT_MODEL || 'claude-haiku-4-5';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 const MAX_MSGS = 14;
 const MAX_CHARS = 1500;
 const RATE_LIMIT = 25;            // messages per IP
@@ -27,17 +27,19 @@ KNOWLEDGE:
 ${KB}`;
 
 const TOOLS = [{
-  name: 'save_lead',
-  description: 'Save a visitor who wants to work with Joel or be contacted. Only call once you have their name, email and project summary.',
-  input_schema: {
-    type: 'object',
-    properties: {
-      name: { type: 'string', description: 'Visitor name' },
-      email: { type: 'string', description: 'Visitor email address' },
-      project: { type: 'string', description: 'One or two lines on what they are building or need' }
-    },
-    required: ['name', 'email', 'project']
-  }
+  functionDeclarations: [{
+    name: 'save_lead',
+    description: 'Save a visitor who wants to work with Joel or be contacted. Only call once you have their name, email and project summary.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        name: { type: 'STRING', description: 'Visitor name' },
+        email: { type: 'STRING', description: 'Visitor email address' },
+        project: { type: 'STRING', description: 'One or two lines on what they are building or need' }
+      },
+      required: ['name', 'email', 'project']
+    }
+  }]
 }];
 
 function allowedOrigin(req) {
@@ -91,7 +93,7 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
   if (!allowedOrigin(req)) return res.status(403).json({ error: 'Not allowed' });
-  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Chat is not set up yet.' });
+  if (!process.env.GEMINI_API_KEY) return res.status(500).json({ error: 'Chat is not set up yet.' });
 
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'x';
   if (limited(ip)) return res.status(429).json({ error: 'Too many messages. Please book a call or email Joel.' });
@@ -107,42 +109,45 @@ module.exports = async (req, res) => {
   if (!msgs.length || msgs[msgs.length - 1].role !== 'user') return res.status(400).json({ error: 'No message' });
 
   const transcript = msgs.map(m => (m.role === 'user' ? 'Visitor: ' : 'Assistant: ') + m.content).join('\n').slice(-3000);
-  let convo = msgs.slice();
+  let convo = msgs.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
   let leadSaved = false;
 
   try {
     for (let i = 0; i < 3; i++) {
-      const r = await fetch('https://api.anthropic.com/v1/messages', {
+      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + MODEL + ':generateContent', {
         method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'x-api-key': process.env.ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({ model: MODEL, max_tokens: 450, system: SYSTEM, tools: TOOLS, messages: convo })
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: SYSTEM }] },
+          contents: convo,
+          tools: TOOLS,
+          generationConfig: { maxOutputTokens: 500, temperature: 0.5 }
+        })
       });
       if (!r.ok) {
         const t = await r.text();
-        console.error('Anthropic error', r.status, t.slice(0, 300));
-        return res.status(502).json({ error: 'The assistant is busy. Please try again, or book a call.' });
+        console.error('Gemini error', r.status, t.slice(0, 300));
+        const msg = r.status === 429 ? 'The assistant is very busy right now. Please try again in a minute, or book a call.' : 'The assistant is busy. Please try again, or book a call.';
+        return res.status(502).json({ error: msg });
       }
       const j = await r.json();
-      const uses = (j.content || []).filter(b => b.type === 'tool_use');
-      if (j.stop_reason === 'tool_use' && uses.length) {
-        convo.push({ role: 'assistant', content: j.content });
+      const parts = (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts) || [];
+      const calls = parts.filter(p => p.functionCall);
+      if (calls.length) {
+        convo.push({ role: 'model', parts });
         const results = [];
-        for (const u of uses) {
+        for (const p of calls) {
           let out = { ok: false, error: 'unknown tool' };
-          if (u.name === 'save_lead') {
-            out = await saveLead(u.input || {}, transcript);
+          if (p.functionCall.name === 'save_lead') {
+            out = await saveLead(p.functionCall.args || {}, transcript);
             if (out.ok) leadSaved = true;
           }
-          results.push({ type: 'tool_result', tool_use_id: u.id, content: JSON.stringify(out), is_error: !out.ok });
+          results.push({ functionResponse: { name: p.functionCall.name, response: out } });
         }
-        convo.push({ role: 'user', content: results });
+        convo.push({ role: 'user', parts: results });
         continue;
       }
-      const text = (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
+      const text = parts.map(p => p.text || '').join('').trim();
       return res.status(200).json({ reply: text || 'Sorry, I missed that. Could you say it again?', leadSaved });
     }
     return res.status(200).json({ reply: 'Sorry, something went wrong. You can book a call here: https://calendly.com/joelifeanyichukwu6/20min', leadSaved });
